@@ -1,0 +1,62 @@
+@startuml menu_management.puml
+title CafeFlow - Menu Management Module
+
+package "Menu Management" <<Rectangle>> {
+  class Menu {
+    -menuId: String
+    -name: String
+    -description: String
+    -categories: List<Category>
+    +addCategory(category): void
+    +removeCategory(categoryId): void
+    +getCategories(): List<Category>
+    +updateCategory(category): void
+  }
+
+  class Category {
+    -categoryId: String
+    -name: String
+    -description: String
+    -items: List<MenuItem>
+    +addItem(item): void
+    +removeItem(itemId): void
+    +getItems(): List<MenuItem>
+    +updateItem(item): void
+  }
+
+  class MenuItem {
+    -itemId: String
+    -name: String
+    -description: String
+    -price: Double
+    -image: String
+    -ingredients: List<Ingredient>
+    -available: Boolean
+    -customizations: List<Customization>
+    +isAvailable(): Boolean
+    +calculatePrice(): Double
+    +updateAvailability(status): void
+  }
+
+  class Customization {
+    -customizationId: String
+    -name: String
+    -options: List<CustomizationOption>
+    +getOptions(): List<CustomizationOption>
+    +addOption(option): void
+    +removeOption(optionId): void
+  }
+
+  class CustomizationOption {
+    -optionId: String
+    -name: String
+    -additionalPrice: Double
+    +getAdditionalPrice(): Double
+  }
+
+  Menu "1" *-- "many" Category
+  Category "1" *-- "many" MenuItem
+  MenuItem "1" *-- "many" Customization
+  Customization "1" *-- "many" CustomizationOption
+}
+@enduml

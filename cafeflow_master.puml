@@ -1,0 +1,13 @@
+@startuml cafeflow_master.puml
+title CafeFlow - Complete System
+
+!include diagrams/authentication.puml
+!include diagrams/menu_management.puml
+!include diagrams/order_management.puml
+' Add other includes...
+
+' Cross-package relationships
+User "1" -- "0..1" Customer
+Order "many" -- "1" User
+MenuItem -- OrderItem
+@enduml

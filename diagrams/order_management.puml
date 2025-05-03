@@ -1,0 +1,81 @@
+@startuml order_management.puml
+title CafeFlow - Order Management Module
+
+package "Order Management" <<Rectangle>> {
+  class Order {
+    -orderId: String
+    -customer: User
+    -items: List<OrderItem>
+    -status: OrderStatus
+    -orderTime: DateTime
+    -totalAmount: Double
+    -paymentStatus: PaymentStatus
+    -orderType: OrderType
+    -tableNumber: Integer
+    +calculateTotal(): Double
+    +updateStatus(status): void
+    +addItem(item): void
+    +removeItem(itemId): void
+    +processPayment(paymentMethod): Boolean
+    +generateReceipt(): Receipt
+  }
+
+  class OrderItem {
+    -orderItemId: String
+    -menuItem: MenuItem
+    -quantity: Integer
+    -customizations: List<CustomizationOption>
+    -specialInstructions: String
+    +calculateSubtotal(): Double
+  }
+
+  enum OrderStatus {
+    PENDING
+    PREPARING
+    READY
+    DELIVERED
+    COMPLETED
+    CANCELLED
+  }
+
+  enum PaymentStatus {
+    PENDING
+    PAID
+    FAILED
+    REFUNDED
+  }
+
+  enum OrderType {
+    DINE_IN
+    TAKEAWAY
+    DELIVERY
+    ONLINE
+  }
+
+  class OrderTracker {
+    -trackingId: String
+    -order: Order
+    -estimatedTime: Integer
+    -deliveryPerson: String
+    -deliveryStatus: DeliveryStatus
+    +updateDeliveryStatus(status): void
+    +calculateEstimatedTime(): Integer
+    +notifyCustomer(): void
+  }
+
+  enum DeliveryStatus {
+    PENDING
+    PICKED_UP
+    IN_TRANSIT
+    DELIVERED
+  }
+
+  Order "1" *-- "many" OrderItem
+  Order -- OrderStatus
+  Order -- PaymentStatus
+  Order -- OrderType
+  Order "1" -- "0..1" OrderTracker
+  OrderTracker -- DeliveryStatus
+  OrderItem "many" -- "1" MenuItem
+}
+@enduml

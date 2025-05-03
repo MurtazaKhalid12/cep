@@ -1,0 +1,36 @@
+@startuml authentication.puml
+title CafeFlow - Authentication Module
+
+package "Authentication" <<Rectangle>> {
+  class User {
+    -userId: String
+    -email: String
+    -password: String
+    -name: String
+    -phone: String
+    -role: Role
+    +login(email, password): Boolean
+    +logout(): void
+    +resetPassword(email): void
+    +updateProfile(userDetails): void
+  }
+
+  enum Role {
+    ADMIN
+    CASHIER
+    WAITER
+    CHEF
+    CUSTOMER
+  }
+
+  class Authentication {
+    +verifyCredentials(email, password): Boolean
+    +generateToken(user): String
+    +validateToken(token): Boolean
+    +refreshToken(token): String
+  }
+
+  User -- Role
+  User -- Authentication
+}
+@enduml

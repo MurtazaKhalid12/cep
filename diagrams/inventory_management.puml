@@ -1,0 +1,75 @@
+@startuml inventory_management.puml
+title CafeFlow - Inventory Management Module
+
+package "Inventory Management" <<Rectangle>> {
+  class Inventory {
+    -inventoryId: String
+    -ingredients: List<Ingredient>
+    +checkStockLevel(ingredientId): Integer
+    +updateStock(ingredientId, quantity): void
+    +getIngredients(): List<Ingredient>
+    +setReorderLevel(ingredientId, level): void
+    +checkLowStock(): List<Ingredient>
+  }
+
+  class Ingredient {
+    -ingredientId: String
+    -name: String
+    -currentStock: Double
+    -unit: String
+    -reorderLevel: Double
+    -costPerUnit: Double
+    -supplier: Supplier
+    -expiryDate: Date
+    +isLowOnStock(): Boolean
+    +calculateValue(): Double
+    +updateStock(quantity): void
+  }
+
+  class Supplier {
+    -supplierId: String
+    -name: String
+    -contactPerson: String
+    -phone: String
+    -email: String
+    -address: String
+    +placeOrder(order): void
+    +getOrderHistory(): List<SupplierOrder>
+    +updateContact(details): void
+  }
+
+  class SupplierOrder {
+    -orderId: String
+    -supplier: Supplier
+    -orderDate: Date
+    -items: List<SupplierOrderItem>
+    -status: SupplierOrderStatus
+    -totalCost: Double
+    +calculateTotalCost(): Double
+    +updateStatus(status): void
+  }
+
+  class SupplierOrderItem {
+    -itemId: String
+    -ingredient: Ingredient
+    -quantity: Double
+    -unitPrice: Double
+    +calculateSubtotal(): Double
+  }
+
+  enum SupplierOrderStatus {
+    PENDING
+    CONFIRMED
+    SHIPPED
+    DELIVERED
+    CANCELLED
+  }
+
+  Inventory "1" *-- "many" Ingredient
+  Ingredient "many" -- "1" Supplier
+  Supplier "1" -- "many" SupplierOrder
+  SupplierOrder "1" *-- "many" SupplierOrderItem
+  SupplierOrder -- SupplierOrderStatus
+  SupplierOrderItem "many" -- "1" Ingredient
+}
+@enduml
